@@ -30,6 +30,3 @@ USER nextjs
 
 EXPOSE 3000
 CMD ["npm", "start"]
-
-# Triggered build via SCM polling - 2026-05-13 21:56:37
-# Auto-triggered build #4 - 2026-05-13 22:08:14
