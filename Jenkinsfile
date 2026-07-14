@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    environment {
+        IMAGE_NAME = 'snapcart'
+        IMAGE_TAG  = "${env.BUILD_NUMBER}"
+    }
+
     stages {
 
         stage('Checkout') {
@@ -9,32 +14,11 @@ pipeline {
             }
         }
 
-        stage('Terraform Init') {
+        stage('Build Docker Image') {
             steps {
-                sh 'terraform init'
+                sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
             }
         }
 
-        stage('Terraform Plan') {
-            steps {
-                sh 'terraform plan'
-            }
-        }
-
-        stage('Terraform Apply') {
-            steps {
-                sh 'terraform apply -auto-approve'
-            }
-        }
-
-    }
-
-    post {
-        success {
-            echo 'SnapCart provisioned by Terraform via Jenkins.'
-        }
-        failure {
-            echo 'Pipeline failed. Check the console output.'
-        }
     }
 }
